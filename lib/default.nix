@@ -59,6 +59,7 @@ in rec {
         "defaultPackage"
         "devShell"
         "devShells"
+        "formatter"
         "hydraJobs"
         "legacyPackages"
         "packages"
