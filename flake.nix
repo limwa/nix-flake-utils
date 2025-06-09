@@ -5,7 +5,7 @@
     systems.url = "github:nix-systems/default";
   };
 
-  outputs = { systems, ...}: {
+  outputs = {systems, ...}: {
     lib = import ./lib {
       defaultSystems = import systems;
     };
