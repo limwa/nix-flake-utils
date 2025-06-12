@@ -32,6 +32,16 @@ in rec {
       welcomeText = stdlib.fallback welcomeText (stdlib.tryReadFile "${path}/README.md");
     };
 
+  mkTemplates = dir:
+    mkOptionalAttrs (
+      builtins.mapAttrs (
+        name: value:
+          if value == "directory"
+          then mkTemplate {path = "${dir}/${name}";}
+          else null
+      ) (builtins.readDir dir)
+    );
+
   mkFlake = mkFlakeWith {};
 
   mkFlakeWith = {

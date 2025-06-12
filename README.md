@@ -39,6 +39,12 @@ This function accepts a `path` attribute, as well as a `description` and `welcom
 
 This is useful for declaring templates, avoiding repetition and making it easier to update flake templates.
 
+### `lib.mkTemplates :: path -> attrs`
+
+This function accepts a `path` to a folder with subfolders, each corresponding to a different template. Then, `mkTemplate` is called for each of the subfolders.
+
+This is useful for flakes which export multiple templates. It allows you to specify where your templates are located and automatically create the corresponding attributes for each of them.
+
 ### `lib.mkFlakeWith :: { systems ? null, forEachSystem :: string -> attrs } -> attrs -> attrs`
 
 This function for the first argument takes in an attrset with two attributes:
