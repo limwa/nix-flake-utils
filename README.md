@@ -142,3 +142,9 @@ x86_64-linux-self.devShells.myShell
 # this also works - all attributes that are not system dependent are preserved
 # x86_64-linux.self.templates.example
 ```
+
+### `lib.invokeAttrs :: attrset -> attrset -> attrset`
+
+As the first argument, receives an attrset where attributes can be plain values or functions. As the second argument, receives an attrset called `inputs`.
+
+Returns an attrset, equal to the first argument, but with all function attributes replaced with the result of calling them with `inputs`.

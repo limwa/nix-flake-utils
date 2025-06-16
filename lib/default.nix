@@ -104,4 +104,12 @@ in rec {
         self
       )
     );
+  
+  invokeAttrs = attrs: inputs:
+    builtins.mapAttrs (
+      name: value:
+        if builtins.isFunction value
+        then value inputs
+        else value
+    );
 }
