@@ -1,5 +1,20 @@
 {defaultSystems}: let
   stdlib = import ./stdlib.nix;
+
+  systemTopLevelAttrs = [
+    "apps"
+    "bundlers"
+    "checks"
+    "defaultApp"
+    "defaultBundler"
+    "defaultPackage"
+    "devShell"
+    "devShells"
+    "formatter"
+    "hydraJobs"
+    "legacyPackages"
+    "packages"
+  ];
 in rec {
   # Removes all attributes with a value of `null` from the given attribute set.
   # Utilities like `nix flake show` will often error if an attribute is `null`, so this function is useful for cleaning up attribute sets.
@@ -59,22 +74,7 @@ in rec {
         systems
       );
 
-    mkFlakeTopLevel = prototype: let
-      systemTopLevelAttrs = [
-        "apps"
-        "bundlers"
-        "checks"
-        "defaultApp"
-        "defaultBundler"
-        "defaultPackage"
-        "devShell"
-        "devShells"
-        "formatter"
-        "hydraJobs"
-        "legacyPackages"
-        "packages"
-      ];
-    in
+    mkFlakeTopLevel = prototype:
       builtins.listToAttrs (
         builtins.map (
           attr: let
@@ -90,4 +90,18 @@ in rec {
         prototype
         // mkFlakeTopLevel prototype
       );
+
+  forSystem = self: system:
+    self
+    // (
+      mkOptionalAttrs (
+        builtins.mapAttrs (
+          name: value:
+            if builtins.elem name systemTopLevelAttrs
+            then value.${system} or null
+            else null
+        )
+        self
+      )
+    );
 }

@@ -113,3 +113,32 @@ Running `nix flake show --all-systems` with this flake yields the following resu
 ### `lib.mkFlake :: attrset -> attrset`
 
 Same as `lib.mkFlakeWith {}` - that is, using the default `systems` and `forEachSystem` attributes.
+
+### `lib.forSystem :: attrset -> string -> attrset`
+
+This function takes as first argument an instantiated flake (typically `self`) and as second argument a system string (e.g. `x86_64-linux`).
+
+As output, it produces a simplified attrset for the flake, where system-dependent top-level attributes are replaced with the corresponding attribute attrset, if it exists.
+
+Here is an example:
+
+```nix
+let 
+    self = {
+        templates = {
+            example = /* ... */;
+        };
+
+        devShells = {
+            x86_64-linux.myShell = pkgs.mkShell { /* ... */ };
+        };
+    };
+
+    x86_64-linux-self = lib.forSystem self "x86_64-linux";
+in
+# this works - it's the same shell declared above
+x86_64-linux-self.devShells.myShell
+
+# this also works - all attributes that are not system dependent are preserved
+# x86_64-linux.self.templates.example
+```
