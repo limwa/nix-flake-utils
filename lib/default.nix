@@ -111,5 +111,5 @@ in rec {
         if builtins.isFunction value
         then value inputs
         else value
-    );
+    ) attrs;
 }
